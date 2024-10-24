@@ -1,0 +1,224 @@
+INPUT:-
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+// Queue structure
+typedef struct Queue {
+    Node* front;
+    Node* rear;
+} Queue;
+
+// Function prototypes
+Queue* createQueue();
+int isEmpty(Queue* q);
+void enqueue(Queue* q, int data);
+int dequeue(Queue* q);
+int peek(Queue* q);
+void freeQueue(Queue* q);
+void printMenu();
+
+int main() {
+    Queue* q = createQueue();
+    int choice, data;
+
+    while (1) {
+        printMenu();
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter the data to enqueue: ");
+                scanf("%d", &data);
+                enqueue(q, data);
+                printf("Enqueued %d\n", data);
+                break;
+            case 2:
+                if (isEmpty(q)) {
+                    printf("Queue is empty!\n");
+                } else {
+                    printf("Dequeued %d\n", dequeue(q));
+                }
+                break;
+            case 3:
+                if (isEmpty(q)) {
+                    printf("Queue is empty!\n");
+                } else {
+                    printf("Front element is %d\n", peek(q));
+                }
+                break;
+            case 4:
+                printf("Queue empty: %d\n", isEmpty(q));
+                break;
+            case 5:
+                freeQueue(q);
+                printf("Queue freed.\n");
+                return 0;
+            default:
+                printf("Invalid choice! Please try again.\n");
+                break;
+        }
+    }
+
+    return 0;
+}
+
+// Function to create a new queue
+Queue* createQueue() {
+    Queue* q = (Queue*)malloc(sizeof(Queue));
+    q->front = q->rear = NULL;
+    return q;
+}
+
+// Function to check if the queue is empty
+int isEmpty(Queue* q) {
+    return q->front == NULL;
+}
+
+// Function to add an element to the rear of the queue
+void enqueue(Queue* q, int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = NULL;
+
+    if (q->rear == NULL) {
+        q->front = q->rear = newNode;
+        return;
+    }
+
+    q->rear->next = newNode;
+    q->rear = newNode;
+}
+
+// Function to remove an element from the front of the queue
+int dequeue(Queue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty!\n");
+        return -1; // Indicate error or handle it appropriately
+    }
+
+    Node* temp = q->front;
+    int data = temp->data;
+
+    q->front = q->front->next;
+
+    if (q->front == NULL) {
+        q->rear = NULL;
+    }
+
+    free(temp);
+    return data;
+}
+
+// Function to peek at the front element of the queue
+int peek(Queue* q) {
+    if (isEmpty(q)) {
+        printf("Queue is empty!\n");
+        return -1; // Indicate error or handle it appropriately
+    }
+    return q->front->data;
+}
+
+// Function to free all the nodes in the queue
+void freeQueue(Queue* q) {
+    while (!isEmpty(q)) {
+        dequeue(q);
+    }
+    free(q);
+}
+
+// Function to print the menu
+void printMenu() {
+    printf("\nQueue Operations Menu:\n");
+    printf("1. Enqueue\n");
+    printf("2. Dequeue\n");
+    printf("3. Peek\n");
+    printf("4. Check if empty\n");
+    printf("5. Exit\n");
+}
+
+OUTPUT:-
+
+Queue Operations Menu:
+1. Enqueue
+2. Dequeue
+3. Peek
+4. Check if empty
+5. Exit
+Enter your choice: 1
+Enter the data to enqueue: 20
+Enqueued 20
+
+Queue Operations Menu:
+1. Enqueue
+2. Dequeue
+3. Peek
+4. Check if empty
+5. Exit
+Enter your choice: 1
+Enter the data to enqueue: 30
+Enqueued 30
+
+Queue Operations Menu:
+1. Enqueue
+2. Dequeue
+3. Peek
+4. Check if empty
+5. Exit
+Enter your choice: 1
+Enter the data to enqueue: 90
+Enqueued 90
+
+Queue Operations Menu:
+1. Enqueue
+2. Dequeue
+3. Peek
+4. Check if empty
+5. Exit
+Enter your choice: 2
+Dequeued 20
+
+Queue Operations Menu:
+1. Enqueue
+2. Dequeue
+3. Peek
+4. Check if empty
+5. Exit
+Enter your choice: 2
+Dequeued 30
+
+Queue Operations Menu:
+1. Enqueue
+2. Dequeue
+3. Peek
+4. Check if empty
+5. Exit
+Enter your choice: 3
+Front element is 90
+
+Queue Operations Menu:
+1. Enqueue
+2. Dequeue
+3. Peek
+4. Check if empty
+5. Exit
+Enter your choice: 4
+Queue empty: 0
+
+Queue Operations Menu:
+1. Enqueue
+2. Dequeue
+3. Peek
+4. Check if empty
+5. Exit
+Enter your choice: 5
+Queue freed.
+
+
+=== Code Execution Successful ===
